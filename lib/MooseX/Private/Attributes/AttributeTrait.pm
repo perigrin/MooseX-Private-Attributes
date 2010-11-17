@@ -1,4 +1,4 @@
-package MooseX::Private::Attributes::Trait;
+package MooseX::Private::Attributes::AttributeTrait;
 use Moose::Role;
 use namespace::autoclean;
 
@@ -9,6 +9,8 @@ sub _process_is_option {
 
     return unless $options->{is};
 
+    my $method_name = $name =~ /^_/ ? $name : "_$name";
+
     ### -------------------------
     ## is => ro, writer => _foo    # turns into (reader => foo, writer => _foo) as before
     ## is => rw, writer => _foo    # turns into (reader => foo, writer => _foo)
@@ -18,30 +20,34 @@ sub _process_is_option {
 
     if ( $options->{is} eq 'ro' ) {
         $class->throw_error(
-            "Cannot define an accessor name on a read-only attribute, accessors are read/write",
-            data => $options )
-            if exists $options->{accessor};
-        $options->{reader} ||= "_$name";
+"Cannot define an accessor name on a read-only attribute, accessors are read/write",
+            data => $options
+        ) if exists $options->{accessor};
+        $options->{reader} ||= $method_name;
     }
     elsif ( $options->{is} eq 'rw' ) {
         if ( $options->{writer} ) {
-            $options->{reader} ||= "_$name";
+            $options->{reader} ||= $method_name;
         }
         else {
-            $options->{accessor} ||= "_$name";
+            $options->{accessor} ||= $method_name;
         }
     }
     elsif ( $options->{is} eq 'bare' ) {
         return;
+
         # do nothing, but don't complain (later) about missing methods
     }
     else {
-        $class->throw_error( "I do not understand this option (is => $options->{is}) on attribute ($name)", data => $options->{is} );
+        $class->throw_error(
+"I do not understand this option (is => $options->{is}) on attribute ($name)",
+            data => $options->{is}
+        );
     }
 }
 
 package Moose::Meta::Attribute::Custom::Trait::Private;
-sub register_implementation { 'MooseX::Private::Attributes::Trait' }
+sub register_implementation { 'MooseX::Private::Attributes::AttributeTrait' }
 
 1;
 __END__

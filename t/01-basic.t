@@ -2,33 +2,42 @@
 use strict;
 use Test::More;
 use Try::Tiny;
-
+use MooseX::Private::Attributes;
 {
 
     package Foo;
-    use Moose;
-    use MooseX::Private::Attributes;
+    use Moose -traits => 'PrivateAttributes';
 
     has foo => (    # private
         traits => ['Private'],
         is     => 'ro',
     );
 
-    has baz => (    # private with a writer _baz
+    has _bar => (    # private
+        is => 'ro',
+    );
+
+    has baz => (     # private with a writer _baz
         traits => ['Private'],
         is     => 'rw'
     );
 }
 
-my $trait = 'MooseX::Private::Attributes::Trait';
+my $trait = 'MooseX::Private::Attributes::AttributeTrait';
 my $o     = Foo->new();
 
-for (qw(foo baz)) {
-    my $attr = $o->meta->find_attribute_by_name($_);
-    ok( $attr->does($trait), "$_ does $trait" );
+for (qw(foo _bar baz)) {
+
+    if ( my $attr = $o->meta->find_attribute_by_name($_) ) {
+        fail("$_ can't do $trait") unless $attr->can('does');
+        ok( $attr->does($trait), "$_ does $trait" );
+    }
+    else {
+        fail("can't get attr for $_");
+    }
 }
 
-can_ok( $o, qw(_foo _baz) );
+can_ok( $o, qw(_foo _bar _baz) );
 is( $o->_baz(1), 1, 'can write to _baz too' );
 try {
     $o->_foo(1);    # should die here
