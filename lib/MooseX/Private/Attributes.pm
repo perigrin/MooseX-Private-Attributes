@@ -50,7 +50,11 @@ __END__
     );
     
     1;
-    __END__
+    
+    package main; 
+    
+    my $meta = Foo->meta;
+    say for $meta->get_private_attribute_list; 
     
 =head1 Description
 

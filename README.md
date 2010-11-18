@@ -31,6 +31,13 @@
          traits => ['Private'],
          is     => 'rw'
     );
+
+    1;
+
+    package main; 
+
+    my $meta = Foo->meta;
+    say for $meta->get_private_attribute_list;
         
 ## Description
 
