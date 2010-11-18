@@ -4,27 +4,9 @@ package MooseX::Private::Attributes;
 
 use Moose 1.19 ();
 use Moose::Exporter;
-use Moose::Util::MetaRole;
 
-use MooseX::Private::Attributes::AttributeTrait; # make sure the trait is loaded
-use MooseX::Private::Attributes::ClassTrait;     # make sure the trait is loaded
-
-Moose::Exporter->setup_import_methods();
-
-sub init_meta {
-    shift;
-    my %args = @_;
-
-    Moose->init_meta(%args);
-
-    Moose::Util::MetaRole::apply_metaroles(
-        for => $args{for_class},
-        class_metaroles =>
-          { class => => ['MooseX::Private::Attributes::ClassTrait'], },
-    );
-
-    return $args{for_class}->meta();
-}
+Moose::Exporter->setup_import_methods( class_metaroles =>
+      { class => => ['MooseX::Private::Attributes::ClassTrait'] }, );
 
 1;
 __END__
