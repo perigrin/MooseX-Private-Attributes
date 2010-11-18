@@ -1,15 +1,15 @@
 # MooseX::Private::Attributes
 
->   21:06 <@mst> I write
->   21:06 <@mst> has '_foo' => (is => 'ro', init_arg => 'foo');
->   21:06 <@mst> far far too much
->   [...]
->   21:07 <@rjbs> I think my version of that is:
->   21:07 <@rjbs> has foo => (reader => '_foo');
->   [...]
->   21:08  * perigrin wonders if it wouldn't be worth the hour to sit down and  write MosoeX::PrivateAccessors
->   21:08 <@perigrin> for is => 'private' 
->   21:08 <@perigrin> that does rjbs' answer 
+    21:06 <@mst> I write
+    21:06 <@mst> has '_foo' => (is => 'ro', init_arg => 'foo');
+    21:06 <@mst> far far too much
+    [...]
+    21:07 <@rjbs> I think my version of that is:
+    21:07 <@rjbs> has foo => (reader => '_foo');
+    [...]
+    21:08  * perigrin wonders if it wouldn't be worth the hour to sit down and  write MosoeX::PrivateAccessors
+    21:08 <@perigrin> for is => 'private' 
+    21:08 <@perigrin> that does rjbs' answer 
 
 
 ## Synopsis 
