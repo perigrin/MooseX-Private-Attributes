@@ -41,7 +41,7 @@
         
 ## Description
 
-This module does I<not> create truely private accessors. Instead it is a way
-of creating the C<_foo> style idiom for Perl. It also adds a set of methods to
-Moose::Meta::Class for finding private attributes easily.
+This module does *not* create truely private accessors. Instead it is a way
+of creating the `_foo` style idiom for Perl. It also adds a set of methods to
+`Moose::Meta::Class` for finding private attributes easily.
 
