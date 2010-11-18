@@ -2,11 +2,12 @@
 use strict;
 use Test::More;
 use Try::Tiny;
-use MooseX::Private::Attributes;
+
 {
 
     package Foo;
-    use Moose -traits => 'PrivateAttributes';
+    use Moose;
+    use MooseX::Private::Attributes;
 
     has foo => (    # private
         traits => ['Private'],
